@@ -26,6 +26,8 @@ let num2;
 let operatorSign;
 let currentValue;
 let operators = ["/", "*", "-", "+"];
+let resultFlag = 0;
+let operatorFlag = 0;
 
 function operate(num1, num2, operatorSign){
     if(operatorSign === "+"){
@@ -71,15 +73,30 @@ const equal = document.querySelector(".equal")
 
 numbersButton.forEach(button => {
     button.addEventListener("click", () => {
-        let currentDisplay = display.innerText + button.innerText;
-        display.innerText = currentDisplay; 
+        if(resultFlag === 1){
+            display.innerText = "";
+            let currentDisplay = display.innerText + button.innerText;
+            display.innerText = currentDisplay;
+            resultFlag = 0;
+        }
+        else{
+            let currentDisplay = display.innerText + button.innerText;
+            display.innerText = currentDisplay;
+        }
     })
 })
 
 operatorsButton.forEach(button => {
     button.addEventListener("click", () => {
-        let currentDisplay = button.innerText;
-        display.innerText += currentDisplay;
+        if(resultFlag === 1){
+            let currentDisplay = display.innerText + button.innerText;
+            display.innerText = currentDisplay;
+            resultFlag = 0;
+        }
+        else{
+            let currentDisplay = display.innerText + button.innerText;
+            display.innerText = currentDisplay;
+        }
     })
 })
 
@@ -100,6 +117,7 @@ equal.addEventListener("click", () => {
         }
     }
     else display.innerText = result;
+    resultFlag = 1;
 })
 
 
