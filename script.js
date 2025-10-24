@@ -1,8 +1,10 @@
 const mainContainer = document.querySelector(".calculator");
 const display = document.querySelector(".display");
 const buttons = document.querySelector(".buttons");
-const numbers = document.querySelector(".numbers");
-const operators = document.querySelector(".operators");
+const row1 = document.querySelector(".row1");
+const row2 = document.querySelector(".row2");
+const row3 = document.querySelector(".row3");
+const row4 = document.querySelector(".row4");
 
 function add(a, b){
     return a + b;
@@ -39,15 +41,42 @@ function operate(num1, num2, operatorSign){
     }
 }
 
+const numbersButton = document.querySelectorAll(".numbers");
+const deleteButton = document.querySelector(".delete");
+const decimal = document.querySelector(".decimal");
+const operatorsButton = document.querySelectorAll(".operators");
+const zero = document.querySelector(".zero");
+const clear = document.querySelector(".clear");
 
+numbersButton.forEach(button => {
+    button.addEventListener("click", () => {
+        let currentDisplay = button.innerText;
+        display.innerText += currentDisplay;
+    })
+})
 
-for(let i = 0; i < 10; i++){
-    const number = document.createElement("button");
-    numbers.appendChild(number);
-}
+operatorsButton.forEach(button => {
+    button.addEventListener("click", () => {
+        let currentDisplay = button.innerText;
+        display.innerText += currentDisplay;
+    })
+})
 
-for(let i = 0; i < 6; i++){
-    const operator = document.createElement("button");
-    operators.appendChild(operator);
-}
+clear.addEventListener("click", () => {
+    display.innerText = "";
+})
+
+decimal.addEventListener("click", () => {
+    display.innerText = decimal.innerText;
+})
+
+deleteButton.addEventListener("click", () => {
+    display.innerText = deleteButton.innerText;
+})
+
+zero.addEventListener("click", () => {
+    let currentDisplay = button.innerText;
+    display.innerText += currentDisplay;
+})
+
 
