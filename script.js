@@ -25,20 +25,40 @@ let num1;
 let num2;
 let operatorSign;
 let currentValue;
+let operators = ["/", "*", "-", "+"];
 
 function operate(num1, num2, operatorSign){
     if(operatorSign === "+"){
-        add(num1, num2);
+        return add(num1, num2);
     }
     else if(operatorSign === "-"){
-        subtract(num1, num2);
+        return subtract(num1, num2);
     }
     else if(operatorSign === "*"){
-        multiply(num1, num2);
+        return multiply(num1, num2);
     }
     else if(operatorSign === "/"){
-        divide(num1, num2);
+        if(num2 === 0){
+            let errorMsg = display.innerText;
+            errorMsg = "Error";
+            return errorMsg; 
+        }
+        return divide(num1, num2);
     }
+}
+
+function getOperator(operators){
+    let currentValue = display.innerText;
+    let min_idx = currentValue.length;
+    for(let i=0; i < 4; i++){
+        if(currentValue.includes(operators[i])){
+            let operator_idx = currentValue.indexOf(operators[i]);
+            if(operator_idx < min_idx){
+                min_idx = operator_idx
+            }
+        }
+    }
+    return currentValue[min_idx];
 }
 
 const numbersButton = document.querySelectorAll(".numbers");
@@ -47,11 +67,12 @@ const decimal = document.querySelector(".decimal");
 const operatorsButton = document.querySelectorAll(".operators");
 const zero = document.querySelector(".zero");
 const clear = document.querySelector(".clear");
+const equal = document.querySelector(".equal")
 
 numbersButton.forEach(button => {
     button.addEventListener("click", () => {
-        let currentDisplay = button.innerText;
-        display.innerText += currentDisplay;
+        let currentDisplay = display.innerText + button.innerText;
+        display.innerText = currentDisplay; 
     })
 })
 
@@ -61,6 +82,26 @@ operatorsButton.forEach(button => {
         display.innerText += currentDisplay;
     })
 })
+
+equal.addEventListener("click", () => {
+    let currentOperator = getOperator(operators);
+    let num1 = display.innerText.split(currentOperator)[0];
+    let num2 = display.innerText.split(currentOperator)[1];
+    num1 = Number(num1);
+    num2 = Number(num2);
+    console.log(`${currentOperator}, ${num1}, ${num2}`);
+    let result = operate(num1, num2, currentOperator);
+    let resultStr = String(result);
+    if(resultStr.includes(".")){
+        let afterDecimal = resultStr.split(".")[1];
+        if(afterDecimal.length >= 4){
+            roundedResult = Math.round(result * 100) / 100;
+            display.innerText = roundedResult;
+        }
+    }
+    else display.innerText = result;
+})
+
 
 clear.addEventListener("click", () => {
     display.innerText = "";
@@ -75,7 +116,7 @@ deleteButton.addEventListener("click", () => {
 })
 
 zero.addEventListener("click", () => {
-    let currentDisplay = button.innerText;
+    let currentDisplay = zero.innerText;
     display.innerText += currentDisplay;
 })
 
