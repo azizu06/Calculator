@@ -52,15 +52,45 @@ function operate(num1, num2, operatorSign){
 function getOperator(operators){
     let currentValue = display.innerText;
     let min_idx = currentValue.length;
+
     for(let i=0; i < 4; i++){
         if(currentValue.includes(operators[i])){
             let operator_idx = currentValue.indexOf(operators[i]);
             if(operator_idx < min_idx){
-                min_idx = operator_idx
+                min_idx = operator_idx;
             }
         }
     }
-    return currentValue[min_idx];
+    if(min_idx !== currentValue.length){
+        return currentValue[min_idx];
+    }
+    else return 0;
+}
+
+function getResult(operators){        
+    if(getOperator(operators) === 0){
+        return display.innerText;
+    }
+    let currentOperator = getOperator(operators);
+    let num1 = display.innerText.split(currentOperator)[0].trim();
+    let num2 = display.innerText.split(currentOperator)[1].trim();
+    if(num1 === "" || num2 === ""){
+        return display.innerText;
+    }
+    num1 = Number(num1);
+    num2 = Number(num2);
+    console.log(`${currentOperator}, ${num1}, ${num2}`);
+    let result = operate(num1, num2, currentOperator);
+    operatorFlag = 0;
+    let resultStr = String(result);
+    if(resultStr.includes(".")){
+        let afterDecimal = resultStr.split(".")[1];
+        if(afterDecimal.length >= 3){
+            let roundedResult = Math.round(result * 100) / 100;
+            return roundedResult;
+        }
+    }   
+    return result;
 }
 
 const numbersButton = document.querySelectorAll(".numbers");
@@ -88,49 +118,55 @@ numbersButton.forEach(button => {
 
 operatorsButton.forEach(button => {
     button.addEventListener("click", () => {
-        if(resultFlag === 1){
-            let currentDisplay = display.innerText + button.innerText;
-            display.innerText = currentDisplay;
+        const lastChar = display.innerText.charAt(display.innerText.length - 1);
+        if(operators.includes(lastChar)){
+            display.innerText = display.innerText.slice(0, -1) + button.innerText;
+            operatorFlag = 1;
             resultFlag = 0;
+            return;
+        }
+        const operatorPresent = getOperator(operators);
+        if(operatorPresent !== 0){
+            let leftNum = display.innerText.split(operatorPresent)[0]
+            let rightNum = display.innerText.split(operatorPresent)[1];
+            if(rightNum !== undefined && rightNum.trim() !== "" && leftNum.trim() !== ""){
+                let currentResult = getResult(operators);
+                display.innerText = String(currentResult) + button.innerText;
+                operatorFlag = 1;
+                resultFlag = 0;
+                return;
+            } 
         }
         else{
-            let currentDisplay = display.innerText + button.innerText;
-            display.innerText = currentDisplay;
+            display.innerText += button.innerText;
         }
     })
 })
 
 equal.addEventListener("click", () => {
-    let currentOperator = getOperator(operators);
-    let num1 = display.innerText.split(currentOperator)[0];
-    let num2 = display.innerText.split(currentOperator)[1];
-    num1 = Number(num1);
-    num2 = Number(num2);
-    console.log(`${currentOperator}, ${num1}, ${num2}`);
-    let result = operate(num1, num2, currentOperator);
-    let resultStr = String(result);
-    if(resultStr.includes(".")){
-        let afterDecimal = resultStr.split(".")[1];
-        if(afterDecimal.length >= 4){
-            roundedResult = Math.round(result * 100) / 100;
-            display.innerText = roundedResult;
-        }
-    }
-    else display.innerText = result;
+    let result = getResult(operators);
+    display.innerText = result;
     resultFlag = 1;
+    operatorFlag = 0;
 })
 
 
 clear.addEventListener("click", () => {
     display.innerText = "";
+    resultFlag = 0;
+    operatorFlag = 0;
 })
 
 decimal.addEventListener("click", () => {
-    display.innerText = decimal.innerText;
+    if(display.innerText.includes(".")){
+        return;
+    }
+    else display.innerText += decimal.innerText;
 })
 
 deleteButton.addEventListener("click", () => {
-    display.innerText = deleteButton.innerText;
+    let currentDisplay = display.innerText;
+    display.innerText = currentDisplay.slice(0, -1);
 })
 
 zero.addEventListener("click", () => {
