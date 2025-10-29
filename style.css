@@ -30,7 +30,7 @@ body {
     display: flex;
     max-width: 375px;
     min-width: 85%;
-    min-height: 100px;
+    min-height: 115px;
     justify-content: flex-end;
     align-items: flex-end;
     border: 5px solid #00Adad;
