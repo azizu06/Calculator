@@ -1,5 +1,6 @@
 const mainContainer = document.querySelector(".calculator");
 const display = document.querySelector(".display");
+const text = document.querySelector(".text");
 const buttons = document.querySelector(".buttons");
 const row1 = document.querySelector(".row1");
 const row2 = document.querySelector(".row2");
@@ -42,7 +43,7 @@ function operate(num1, num2, operatorSign){
     }
     else if(operatorSign === "/"){
         if(num2 === 0){
-            let errorMsg = display.innerText;
+            let errorMsg = text.innerText;
             errorMsg = "Error";
             return errorMsg; 
         }
@@ -51,14 +52,17 @@ function operate(num1, num2, operatorSign){
 }
 
 function getOperator(operators){
-    let currentValue = display.innerText;
+
+    let currentValue = text.innerText;
     let min_idx = currentValue.length;
 
     for(let i=0; i < 4; i++){
         if(currentValue.includes(operators[i])){
             let operator_idx = currentValue.indexOf(operators[i]);
-            if(operator_idx < min_idx){
-                min_idx = operator_idx;
+            if(operator_idx !== 0){
+                if(operator_idx < min_idx){
+                    min_idx = operator_idx;
+                }
             }
         }
     }
@@ -70,13 +74,13 @@ function getOperator(operators){
 
 function getResult(operators){        
     if(getOperator(operators) === 0){
-        return display.innerText;
+        return text.innerText;
     }
     let currentOperator = getOperator(operators);
-    let num1 = display.innerText.split(currentOperator)[0].trim();
-    let num2 = display.innerText.split(currentOperator)[1].trim();
+    let num1 = text.innerText.split(currentOperator)[0].trim();
+    let num2 = text.innerText.split(currentOperator)[1].trim();
     if(num1 === "" || num2 === ""){
-        return display.innerText;
+        return text.innerText;
     }
     num1 = Number(num1);
     num2 = Number(num2);
@@ -98,46 +102,50 @@ const numbersButton = document.querySelectorAll(".numbers");
 const deleteButton = document.querySelector(".delete");
 const decimal = document.querySelector(".decimal");
 const operatorsButton = document.querySelectorAll(".operators");
-const zero = document.querySelector(".zero");
 const clear = document.querySelector(".clear");
 const equal = document.querySelector(".equal");
 
 function handleNumber(button){
     if(resultFlag === 1){
-            display.innerText = "";
-            let currentDisplay = display.innerText + button.innerText;
-            display.innerText = currentDisplay;
+            text.innerText = "";
+            let currentDisplay = text.innerText + button.innerText;
+            text.innerText = currentDisplay;
             resultFlag = 0;
         }
     else{
-        let currentDisplay = display.innerText + button.innerText;
-        display.innerText = currentDisplay;
+        let currentDisplay = text.innerText + button.innerText;
+        text.innerText = currentDisplay;
     }
 }
 
 
 function handleOperator(button){
-    const lastChar = display.innerText.charAt(display.innerText.length - 1);
+    const lastChar = text.innerText.charAt(text.innerText.length - 1);
+    const firstChar = text.innerText.charAt(0);
+    if(operators.includes(firstChar)){
+        operatorFlag = 0;
+    }
     if(operators.includes(lastChar)){
-        display.innerText = display.innerText.slice(0, -1) + button.innerText;
+        text.innerText = text.innerText.slice(0, -1) + button.innerText;
         operatorFlag = 1;
         resultFlag = 0;
         return;
     }
     const operatorPresent = getOperator(operators);
     if(operatorPresent !== 0){
-        let leftNum = display.innerText.split(operatorPresent)[0]
-        let rightNum = display.innerText.split(operatorPresent)[1];
+        let leftNum = text.innerText.split(operatorPresent)[0]
+        let rightNum = text.innerText.split(operatorPresent)[1];
         if(rightNum !== undefined && rightNum.trim() !== "" && leftNum.trim() !== ""){
             let currentResult = getResult(operators);
-            display.innerText = String(currentResult) + button.innerText;
+            text.innerText = String(currentResult) + button.innerText;
             operatorFlag = 1;
             resultFlag = 0;
             return;
         } 
     }
     else{
-        display.innerText += button.innerText;
+        text.innerText += button.innerText;
+        resultFlag = 0;
     }
 }
 
@@ -155,14 +163,14 @@ operatorsButton.forEach(button => {
 
 equal.addEventListener("click", () => {
     let result = getResult(operators);
-    display.innerText = result;
+    text.innerText = result;
     resultFlag = 1;
     operatorFlag = 0;
 })
 
 
 clear.addEventListener("click", () => {
-    display.innerText = "";
+    text.innerText = "";
     resultFlag = 0;
     operatorFlag = 0;
 })
@@ -170,22 +178,22 @@ clear.addEventListener("click", () => {
 decimal.addEventListener("click", () => {
     const operatorPresent = getOperator(operators);
     if(operatorPresent === 0){
-        if(display.innerText.includes(".")){
+        if(text.innerText.includes(".")){
             return;
         }
-        else display.innerText += decimal.innerText;
+        else text.innerText += decimal.innerText;
     }
     else if(operatorPresent !== 0){
-        if(display.innerText.split(operatorPresent)[1].includes(".")){
+        if(text.innerText.split(operatorPresent)[1].includes(".")){
             return;
         }
-        else display.innerText += decimal.innerText;
+        else text.innerText += decimal.innerText;
     }
 })
 
 deleteButton.addEventListener("click", () => {
-    let currentDisplay = display.innerText;
-    display.innerText = currentDisplay.slice(0, -1);
+    let currentDisplay = text.innerText;
+    text.innerText = currentDisplay.slice(0, -1);
 })
 
 function compareKeys(button, key){
