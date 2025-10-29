@@ -28,6 +28,7 @@ body {
 
 .display {
     display: flex;
+    max-width: 375px;
     min-width: 85%;
     min-height: 100px;
     justify-content: flex-end;
@@ -38,7 +39,15 @@ body {
     margin-bottom: -10px;
     border-radius: 15px;
     padding: 0px 20px 10px 0px;
+    
+}
+
+.text{
     font-size: 40px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    text-align: right;
 }
 
 .buttons {
