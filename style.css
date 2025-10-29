@@ -84,9 +84,14 @@ body {
     justify-content: center;
 }
 
-.numbers, .operators, .clear, .delete, .decimal, .zero, .equal {
+.numbers, .operators, .clear, .delete, .decimal, .equal {
     color: white;
-    background-color: #005c5c
+    background-color: #005c5c;
+}
+
+.numbers, .operators, .clear, .delete, .decimal, .equal {
+    color: white;
+    background-color: #095353;
 }
 
 .numbers, .operators, .decimal, .equal {
@@ -109,4 +114,16 @@ body {
 
 .clear {
     background-color: #8e70cf;
+}
+
+.clear:hover {
+    background-color: hsl(259, 50%, 70%);
+}
+
+.delete:hover, .numbers:hover, .decimal:hover {
+    background-color: hsl(180, 80%, 28%);
+}
+
+.operators:hover, .equal:hover {
+    background-color: hsl(239, 80%, 85%);
 }
