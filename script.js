@@ -58,16 +58,19 @@ function getOperator(operators){
 
     for(let i=0; i < 4; i++){
         if(currentValue.includes(operators[i])){
-            let operator_idx = currentValue.indexOf(operators[i]);
-            if(operator_idx !== 0){
+            let operator_idx = currentValue.lastIndexOf(operators[i]);
+            if(operator_idx === 0){
+               continue;
+            }
+            else if(operator_idx !== 0){
                 if(operator_idx < min_idx){
                     min_idx = operator_idx;
-                }
+                }  
             }
         }
     }
     if(min_idx !== currentValue.length){
-        return currentValue[min_idx];
+        return min_idx;
     }
     else return 0;
 }
@@ -76,16 +79,15 @@ function getResult(operators){
     if(getOperator(operators) === 0){
         return text.innerText;
     }
-    let currentOperator = getOperator(operators);
-    let num1 = text.innerText.split(currentOperator)[0].trim();
-    let num2 = text.innerText.split(currentOperator)[1].trim();
-    if(num1 === "" || num2 === ""){
+    let index = getOperator(operators);
+    let part1 = text.innerText.substring(0, index).trim();
+    let part2 = text.innerText.substring(index+1).trim();
+    if(part1 === "" || part2 === ""){
         return text.innerText;
     }
-    num1 = Number(num1);
-    num2 = Number(num2);
-    console.log(`${currentOperator}, ${num1}, ${num2}`);
-    let result = operate(num1, num2, currentOperator);
+    part1 = Number(part1);
+    part2 = Number(part2);
+    let result = operate(part1, part2, text.innerText[index]);
     operatorFlag = 0;
     let resultStr = String(result);
     if(resultStr.includes(".")){
@@ -176,15 +178,15 @@ clear.addEventListener("click", () => {
 })
 
 decimal.addEventListener("click", () => {
-    const operatorPresent = getOperator(operators);
-    if(operatorPresent === 0){
+    const index = getOperator(operators);
+    if(index === 0){
         if(text.innerText.includes(".")){
             return;
         }
         else text.innerText += decimal.innerText;
     }
-    else if(operatorPresent !== 0){
-        if(text.innerText.split(operatorPresent)[1].includes(".")){
+    else if(index !== 0){
+        if(text.innerText.substring(index+1).includes(".")){
             return;
         }
         else text.innerText += decimal.innerText;
