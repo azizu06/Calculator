@@ -158,20 +158,24 @@ clear.addEventListener("click", () => {
 })
 
 decimal.addEventListener("click", () => {
-    if(display.innerText.includes(".")){
-        return;
+    const operatorPresent = getOperator(operators);
+    if(operatorPresent === 0){
+        if(display.innerText.includes(".")){
+            return;
+        }
+        else display.innerText += decimal.innerText;
     }
-    else display.innerText += decimal.innerText;
+    else if(operatorPresent !== 0){
+        if(display.innerText.split(operatorPresent)[1].includes(".")){
+            return;
+        }
+        else display.innerText += decimal.innerText;
+    }
 })
 
 deleteButton.addEventListener("click", () => {
     let currentDisplay = display.innerText;
     display.innerText = currentDisplay.slice(0, -1);
-})
-
-zero.addEventListener("click", () => {
-    let currentDisplay = zero.innerText;
-    display.innerText += currentDisplay;
 })
 
 
