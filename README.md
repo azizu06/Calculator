@@ -3,7 +3,7 @@
 An accessible, single-page calculator implemented with vanilla HTML, CSS, and JavaScript.
 
 ## Demo
-- Explore the live app: [Calculator Demo](https://calculator-chi-three-10.vercel.app)
+- Explore the live app: <a href="https://calculator-chi-three-10.vercel.app" target="_blank" rel="noopener noreferrer">Calculator Demo</a>
 
 ## What the Project Does
 - Emulates a four-function calculator with support for chained operations and decimal input.
