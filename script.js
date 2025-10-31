@@ -133,11 +133,11 @@ function handleOperator(button){
         resultFlag = 0;
         return;
     }
-    const operatorPresent = getOperator(operators);
-    if(operatorPresent !== 0){
-        let leftNum = text.innerText.split(operatorPresent)[0]
-        let rightNum = text.innerText.split(operatorPresent)[1];
-        if(rightNum !== undefined && rightNum.trim() !== "" && leftNum.trim() !== ""){
+    const index = getOperator(operators);
+    if(index !== 0){
+        let part1 = text.innerText.substring(0, index).trim();
+        let part2 = text.innerText.substring(index+1).trim();
+        if(part2 !== undefined && part2.trim() !== "" && part1.trim() !== ""){
             let currentResult = getResult(operators);
             text.innerText = String(currentResult) + button.innerText;
             operatorFlag = 1;
