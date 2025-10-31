@@ -23,7 +23,7 @@ An accessible, single-page calculator implemented with vanilla HTML, CSS, and Ja
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone <https://github.com/azizu06/Calculator.git>
+   git clone https://github.com/azizu06/Calculator.git
    cd Calculator
    ```
 2. Open `index.html` in your browser, or start a static server:
